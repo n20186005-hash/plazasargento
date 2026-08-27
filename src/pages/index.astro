@@ -1,0 +1,99 @@
+---
+import Base from '../layouts/Base.astro';
+const pageTitle = 'Plaza Sargento Lores, Iquitos | Historia, visita y guía práctica';
+const description = 'Guía independiente y no lucrativa de la Plaza Sargento Lores en Iquitos, Loreto: historia de Fernando Lores, cómo llegar, servicios, mapa, accesibilidad y consejos de visita.';
+const mapUrl = 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3981.2852662569203!2d-73.25471222305488!3d-3.7479237962259844!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91ea10732540db5f%3A0xc715c75a5c817eaa!2sPlaza%20Sargento%20Lores!5e0!3m2!1ses!2spe!4v1787796912017!5m2!1ses!2spe';
+const siteBase = Astro.site?.href?.replace(/\/$/, '');
+const attractionUrl = siteBase ? `${siteBase}/` : undefined;
+const schema = {
+  '@context':'https://schema.org',
+  '@type':['TouristAttraction','CivicStructure'],
+  '@id': attractionUrl ? `${attractionUrl}#plaza-sargento-lores` : '#plaza-sargento-lores',
+  name:'Plaza Sargento Lores',
+  alternateName:['Plaza Sargento','Plaza Sargento Lores de Iquitos'],
+  description,
+  url: attractionUrl,
+  image: siteBase ? [`${siteBase}/images/plaza-sargento-lores.jpg`,`${siteBase}/images/plaza-palmeras.jpg`,`${siteBase}/images/plaza-paseo.jpg`] : ['/images/plaza-sargento-lores.jpg','/images/plaza-palmeras.jpg','/images/plaza-paseo.jpg'],
+  address:{'@type':'PostalAddress',streetAddress:'Ramón Castilla 349',addressLocality:'Iquitos',addressRegion:'Loreto',postalCode:'16001',addressCountry:'PE'},
+  geo:{'@type':'GeoCoordinates',latitude:-3.7479237962259844,longitude:-73.25471222305488},
+  isAccessibleForFree:true,
+  publicAccess:true,
+  aggregateRating:{'@type':'AggregateRating',ratingValue:'4.1',reviewCount:'4267',bestRating:'5',worstRating:'1'},
+  sameAs:[
+    'https://maps.app.goo.gl/LymMKqvXLTPbYh4s8',
+    'https://vr.munimaynas.gob.pe/',
+    'https://www.gob.pe/institucion/munimaynas'
+  ]
+};
+const faq = [
+  ['¿La Plaza Sargento Lores cobra entrada?','No. Es un espacio público urbano y el acceso general es gratuito. Las actividades temporales organizadas en la plaza pueden tener condiciones propias.'],
+  ['¿Cuánto tiempo conviene dedicar a la plaza?','Para recorrerla, descansar y observar el entorno, una visita de 30 a 60 minutos suele ser suficiente. Puede ampliarse si coincide con una actividad cívica, cultural o comunitaria.'],
+  ['¿Cuál es el mejor momento para visitarla?','Por el clima cálido y húmedo de Iquitos, suelen resultar más cómodas las primeras horas de la mañana y el final de la tarde. Conviene llevar agua, protección solar y protección frente a la lluvia.'],
+  ['¿Cómo se llega desde el aeropuerto de Iquitos?','Desde el Aeropuerto Internacional Coronel FAP Francisco Secada Vignetta se puede continuar por taxi autorizado o transporte urbano hacia el centro de Iquitos. Antes de salir, conviene confirmar la ruta y la tarifa aplicable.'],
+  ['¿Hay estacionamiento dentro de la plaza?','La plaza no debe entenderse como un estacionamiento. El aparcamiento depende de la regulación de las vías cercanas y de la señalización vigente; no se recomienda bloquear accesos peatonales ni áreas cívicas.'],
+  ['¿Hay baños públicos, comida y comercios cerca?','La disponibilidad de baños públicos puede variar. En el entorno urbano hay servicios de alimentación, hospedaje, comercios y abastecimiento; esta guía recomienda verificar opciones por tipo y ubicación, sin promover establecimientos concretos.'],
+  ['¿Qué representa el nombre Sargento Lores?','La plaza honra a Fernando Lores Tenazoa, militar peruano vinculado al Combate de Güeppí de 1933. Su memoria forma parte de las ceremonias cívicas realizadas en Iquitos.']
+];
+const faqSchema={'@context':'https://schema.org','@type':'FAQPage',mainEntity:faq.map(([q,a])=>({'@type':'Question',name:q,acceptedAnswer:{'@type':'Answer',text:a}}))};
+---
+<Base title={pageTitle} description={description}>
+<script type="application/ld+json" set:html={JSON.stringify(schema)}></script>
+<script type="application/ld+json" set:html={JSON.stringify(faqSchema)}></script>
+<header><div class="container nav">
+  <a class="brand" href="#inicio" aria-label="Plaza Sargento - Inicio"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f2c35f"/><path d="M16 43c7-17 13-26 16-26s9 9 16 26" fill="none" stroke="#173f2c" stroke-width="5" stroke-linecap="round"/><path d="M21 38h22" stroke="#173f2c" stroke-width="5" stroke-linecap="round"/></svg><span>Plaza Sargento</span></a>
+  <nav class="navlinks" aria-label="Navegación principal"><a href="#historia">Historia</a><a href="#visita">Visita</a><a href="#llegar">Cómo llegar</a><a href="#mapa">Mapa</a><a href="#faq">Preguntas</a></nav>
+</div></header>
+<main>
+<section class="hero" id="inicio"><div class="container hero-inner">
+  <div class="eyebrow" style="color:#f4c966">Iquitos · Maynas · Loreto · Perú</div>
+  <h1>Plaza Sargento Lores</h1>
+  <p>Una plaza cívica del corazón urbano de Iquitos, vinculada a la memoria de Fernando Lores Tenazoa y a la vida cotidiana de la capital amazónica.</p>
+  <div class="badge-row"><span class="badge">★ 4,1 / 5 · 4.267 reseñas*</span><span class="badge">Espacio público</span><span class="badge">Acceso gratuito</span><span class="badge">Ramón Castilla 349</span></div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px"><a class="btn btn-light" href="#mapa">Ver ubicación</a><a class="btn btn-primary" style="background:#efb84a;color:#173f2c" href="#visita">Planificar la visita</a></div>
+</div></section>
+<div class="band"><div class="container facts"><div class="fact"><strong>Iquitos</strong><span>Distrito y ciudad</span></div><div class="fact"><strong>Maynas</strong><span>Provincia</span></div><div class="fact"><strong>Loreto</strong><span>Región amazónica</span></div><div class="fact"><strong>Plaza cívica</strong><span>Uso urbano y comunitario</span></div></div></div>
+
+<section class="section history" id="historia"><div class="container grid-2">
+  <div><div class="eyebrow">Memoria urbana</div><h2>Una plaza que enlaza ciudadanía e historia amazónica</h2><p class="lead">La Plaza Sargento Lores es un espacio público del distrito de Iquitos. Su nombre recuerda al sargento Fernando Lores Tenazoa, figura peruana asociada al Combate de Güeppí, ocurrido el 26 de marzo de 1933 durante el conflicto colombo-peruano.</p>
+  <p>La plaza no funciona únicamente como área verde: su ubicación junto a la sede de la Municipalidad Provincial de Maynas la vincula de forma directa con la vida cívica local. Distintas entidades públicas la emplean también como punto para ferias, campañas de salud, actividades comunitarias y conmemoraciones.</p>
+  <div class="notice"><strong>Contexto documental:</strong> fuentes públicas peruanas confirman la presencia de la Municipalidad Provincial de Maynas en Echenique 350, Plaza Sargento Lores, y registran intervenciones de mejora del espacio urbano.</div></div>
+  <div class="timeline"><article><strong>1933 · Memoria del Combate de Güeppí</strong><p>Fernando Lores Tenazoa es recordado por su actuación en la defensa de Güeppí. La plaza mantiene su nombre como referencia cívica de Iquitos.</p></article><article><strong>2018 · Mejoramiento integral</strong><p>La Contraloría General documentó la obra de mejoramiento de la plaza impulsada por la Municipalidad Provincial de Maynas, confirmando la intervención contemporánea del espacio.</p></article><article><strong>Actualidad · Lugar de encuentro</strong><p>La plaza continúa acogiendo actividades públicas, campañas institucionales y ferias regionales, reforzando su papel como punto de encuentro de la ciudad.</p></article></div>
+</div></section>
+
+<section class="section"><div class="container"><div class="eyebrow">Paisaje de la plaza</div><h2>Palmeras, paseos y escala urbana</h2><p class="lead">El diseño actual combina senderos amplios, jardinería tropical, zonas de estancia y estructuras de sombra, una imagen coherente con el clima cálido-húmedo de Iquitos.</p><div class="grid-3" style="margin-top:30px">
+<figure class="photo-card"><img src="/images/plaza-sargento-lores.jpg" alt="Vista general de la Plaza Sargento Lores en Iquitos" loading="lazy"><figcaption>Vista general del eje peatonal y la vegetación tropical.</figcaption></figure>
+<figure class="photo-card"><img src="/images/plaza-palmeras.jpg" alt="Palmeras y áreas verdes de la Plaza Sargento Lores" loading="lazy"><figcaption>Áreas verdes y palmeras en el entorno de la plaza.</figcaption></figure>
+<figure class="photo-card"><img src="/images/plaza-paseo.jpg" alt="Paseos y espacios de descanso en Plaza Sargento Lores" loading="lazy"><figcaption>Paseos, sombra y espacios de permanencia.</figcaption></figure>
+</div></div></section>
+
+<section class="section" id="visita" style="background:#e8f0e9"><div class="container"><div class="eyebrow">Información práctica</div><h2>Qué saber antes de ir</h2><div class="grid-3" style="margin-top:28px">
+<div class="card"><div class="info-icon">🎟️</div><h3>Entrada y gastos</h3><p>El acceso general a la plaza es gratuito. No existe una taquilla propia del espacio público. Presupuesta por separado transporte, alimentación o actividades externas.</p></div>
+<div class="card"><div class="info-icon">🕒</div><h3>Mejor horario y duración</h3><p>Las horas tempranas y el final de la tarde suelen ofrecer una experiencia térmica más cómoda. Reserva entre 30 y 60 minutos para una visita tranquila.</p></div>
+<div class="card"><div class="info-icon">🌦️</div><h3>Clima amazónico</h3><p>Iquitos presenta calor, humedad y lluvias frecuentes. Lleva agua, protector solar, sombrero y una capa ligera para lluvia.</p></div>
+<div class="card"><div class="info-icon">🚻</div><h3>WC y accesibilidad</h3><p>No asumimos disponibilidad permanente de baños públicos dentro de la plaza. Consulta servicios sanitarios en equipamientos públicos o establecimientos autorizados cercanos. Los paseos principales son mayormente a nivel, aunque conviene verificar obstáculos temporales.</p></div>
+<div class="card"><div class="info-icon">🅿️</div><h3>Estacionamiento</h3><p>No se considera estacionamiento dentro de la plaza. Para vehículos, utiliza únicamente espacios permitidos en las vías cercanas y respeta señalización, zonas reservadas y accesos peatonales.</p></div>
+<div class="card"><div class="info-icon">📶</div><h3>Conectividad</h3><p>La Municipalidad Provincial de Maynas informó del despliegue de acceso Wi‑Fi público en Plaza Sargento Lores. La disponibilidad y condiciones técnicas pueden cambiar.</p></div>
+</div></div></section>
+
+<section class="section" id="llegar"><div class="container grid-2"><div><div class="eyebrow">Movilidad en Iquitos</div><h2>Cómo llegar a Plaza Sargento Lores</h2><p class="lead">La plaza se encuentra en el tejido central de Iquitos, cerca de ejes urbanos como Echenique, Ramón Castilla, Sargento Lores y Morona.</p><table class="table"><tbody>
+<tr><td>Desde el aeropuerto</td><td>Desde el Aeropuerto Internacional Coronel FAP Francisco Secada Vignetta, continúa hacia el centro por taxi autorizado o transporte urbano. La duración depende del tráfico y del punto de salida del terminal.</td></tr>
+<tr><td>Autobús / transporte urbano</td><td>Usa rutas que se dirijan al centro de Iquitos y confirma con el conductor el descenso más cercano a Plaza Sargento Lores o a la Municipalidad Provincial de Maynas.</td></tr>
+<tr><td>Taxi y mototaxi</td><td>Son opciones habituales en Iquitos. Indica “Plaza Sargento Lores, Echenique con Ramón Castilla” como referencia y acuerda o verifica la tarifa antes del trayecto.</td></tr>
+<tr><td>A pie desde el centro</td><td>La plaza forma parte del área urbana central. Desde Plaza de Armas es posible llegar caminando por la trama de jirones del centro; usa cruces seguros y protección frente al sol o la lluvia.</td></tr>
+</tbody></table></div>
+<div class="card"><h3>Servicios que suelen interesar al visitante</h3><p>Para mantener esta guía neutral y no comercial, indicamos <strong>tipos de servicio</strong> y no negocios concretos.</p><ul><li><strong>Alimentación:</strong> restaurantes de cocina amazónica, menús locales, cafeterías y puestos autorizados del centro.</li><li><strong>Alojamiento:</strong> hoteles, hostales y hospedajes formales en el área central.</li><li><strong>Compras:</strong> mercados, minimercados, farmacias y comercios de abastecimiento cotidiano.</li><li><strong>Combustible:</strong> estaciones de servicio en vías principales; confirma horarios y combustible disponible.</li><li><strong>Carga eléctrica:</strong> la infraestructura pública de carga para vehículos eléctricos puede ser limitada; planifica con antelación.</li><li><strong>Salud y seguridad:</strong> identifica centros de salud, comisarías y números de emergencia antes de desplazarte.</li></ul></div></div></section>
+
+<section class="section" style="background:#fffdf8"><div class="container"><div class="eyebrow">Alrededores</div><h2>Comer y seguir explorando sin recomendaciones comerciales</h2><div class="grid-2">
+<div class="card"><h3>🍲 Gastronomía cercana: qué buscar</h3><p>En el centro de Iquitos podrás encontrar cocina amazónica y peruana. Para una experiencia cultural más completa, busca establecimientos formales que ofrezcan platos regionales, bebidas de frutas amazónicas y opciones preparadas con buenas prácticas de higiene. Esta guía no clasifica ni promociona negocios.</p></div>
+<div class="card"><h3>🧭 Lugares públicos y culturales próximos</h3><p>La Plaza de Armas de Iquitos, el Malecón Tarapacá, la Casa de Fierro, inmuebles históricos del centro y espacios culturales amazónicos forman parte del circuito urbano. Comprueba horarios de museos o edificios antes de desplazarte.</p></div>
+</div></div></section>
+
+<section class="section" id="mapa"><div class="container"><div class="eyebrow">Geografía verificada</div><h2>Ubicación en Iquitos</h2><p class="lead">Dirección de referencia: Ramón Castilla 349, Iquitos 16001, provincia de Maynas, región Loreto, Perú.</p><div class="map-wrap" style="margin-top:28px"><iframe src={mapUrl} title="Mapa de Plaza Sargento Lores, Iquitos" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div><p class="fine">El mapa se carga desde Google y está configurado en español para Perú. Al cargarlo, Google puede recibir datos técnicos de conexión conforme a sus propias políticas.</p></div></section>
+
+<section class="section faq" id="faq" style="background:#e8f0e9"><div class="container" style="max-width:900px"><div class="eyebrow">FAQ</div><h2>Preguntas frecuentes</h2>{faq.map(([q,a])=><details><summary>{q}</summary><p>{a}</p></details>)}<p class="fine">* La valoración 4,1/5 y el recuento de 4.267 reseñas corresponden a la información de Google Maps proporcionada para esta guía y pueden variar con el tiempo.</p></div></section>
+
+<section class="section"><div class="container grid-2"><div><div class="eyebrow">Fuentes y metodología</div><h2>Una guía construida alrededor de la entidad real</h2><p class="lead">Para evitar confundir esta plaza con lugares de nombre parecido, la página mantiene de forma coherente su nombre completo, dirección, distrito, provincia, región y coordenadas, además de enlazar fuentes institucionales relacionadas con Iquitos y Maynas.</p></div><div class="card"><h3>Fuentes públicas de contraste</h3><ul><li><a href="https://www.gob.pe/institucion/munimaynas" rel="external">Municipalidad Provincial de Maynas</a></li><li><a href="https://www.gob.pe/institucion/regionloreto" rel="external">Gobierno Regional de Loreto / autoridad regional de turismo</a></li><li><a href="https://www.gob.pe/mincetur" rel="external">Ministerio de Comercio Exterior y Turismo del Perú</a></li><li><a href="https://www.peru.travel/" rel="external">PROMPERÚ – portal oficial de turismo</a></li><li><a href="https://www.gob.pe/institucion/contraloria/noticias/496352-318-2018-cg-contraloria-advierte-deficiencias-en-la-obra-de-mejoramiento-de-la-plaza-sargento-lores-de-iquitos" rel="external">Contraloría: obra de mejoramiento de la plaza</a></li></ul></div></div></section>
+</main>
+<footer><div class="container"><div class="footer-grid"><div><a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f2c35f"/><path d="M16 43c7-17 13-26 16-26s9 9 16 26" fill="none" stroke="#173f2c" stroke-width="5" stroke-linecap="round"/><path d="M21 38h22" stroke="#173f2c" stroke-width="5" stroke-linecap="round"/></svg><span>Plaza Sargento</span></a><p class="fine">Guía independiente para comprender y visitar la Plaza Sargento Lores de Iquitos.</p></div><div><strong>Información</strong><p><a href="#historia">Historia</a><br><a href="#llegar">Cómo llegar</a><br><a href="#faq">Preguntas frecuentes</a></p></div><div><strong>Legal</strong><p><a href="/privacidad/">Política de privacidad</a><br><a href="/terminos/">Términos del servicio</a><br><a href="/cookies/">Configuración de cookies</a></p></div></div>
+<hr style="border:0;border-top:1px solid #ffffff22;margin:38px 0 24px"><div class="fine"><p>Este sitio web es un proyecto independiente y sin fines de lucro de información para visitantes y no está afiliado a ninguna entidad gubernamental u organización oficial.</p><p>La información sobre el lugar se contrasta con materiales públicos de la <strong>Municipalidad Provincial de Maynas</strong>, la autoridad regional de turismo del <strong>Gobierno Regional de Loreto</strong> y las instituciones nacionales de turismo del Perú, incluidos <strong>MINCETUR y PROMPERÚ</strong>. No contiene recomendaciones comerciales patrocinadas.</p><p>Derechos de imagen: los derechos y derechos de autor de las fotografías mostradas pertenecen a sus respectivos autores o entidades de origen.</p><p>© 2026 Guía Plaza Sargento Lores. Todos los derechos reservados.</p></div></div></footer>
+</Base>

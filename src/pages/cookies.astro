@@ -1,0 +1,20 @@
+---
+import Legal from '../layouts/Legal.astro';
+---
+<Legal title="Configuración de cookies | Plaza Sargento Lores" description="Gestiona las preferencias de cookies de la guía Plaza Sargento Lores.">
+<div class="eyebrow">Privacidad</div><h1>Configuración de cookies</h1><p><strong>Última actualización: agosto de 2026</strong></p><p>Utilizamos cookies y almacenamiento local para funciones esenciales y, con su elección, para comprender de forma agregada cómo se utiliza la guía. Puede cambiar estas preferencias en cualquier momento.</p>
+<div class="cookie-controls">
+<div class="cookie-row"><div><strong>Cookies necesarias</strong><br><span class="fine">Imprescindibles para funciones básicas y para conservar sus preferencias. No pueden desactivarse desde este panel.</span></div><input class="switch" type="checkbox" checked disabled aria-label="Cookies necesarias activas"></div>
+<div class="cookie-row"><div><strong>Google Analytics</strong><br><span class="fine">Ayuda a medir visitas y uso del sitio. El almacenamiento analítico permanece denegado mientras no lo autorice.</span></div><input class="switch" id="analytics" type="checkbox" aria-label="Activar Google Analytics"></div>
+<div class="cookie-row"><div><strong>Preferencias</strong><br><span class="fine">Permiten recordar configuraciones del sitio en este dispositivo.</span></div><input class="switch" id="preferences" type="checkbox" aria-label="Activar cookies de preferencias"></div>
+<div class="cookie-row"><div><strong>Marketing / publicidad personalizada</strong><br><span class="fine">Este proyecto no activa almacenamiento publicitario ni publicidad personalizada desde este panel.</span></div><input class="switch" type="checkbox" disabled aria-label="Marketing desactivado"></div>
+</div>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px"><button class="btn btn-primary" id="save" type="button">Guardar preferencias</button><button class="btn" style="border:1px solid #173f2c" id="reject" type="button">Rechazar lo opcional</button></div><p id="status" class="fine" aria-live="polite"></p>
+<h2>Consentimiento y cambios</h2><p>Puede revisar esta página cuando quiera. Desactivar tecnologías opcionales no impide consultar la guía principal, aunque puede reducir nuestra capacidad para analizar el uso del sitio.</p>
+<script is:inline>
+  const a=document.getElementById('analytics'),p=document.getElementById('preferences'),s=document.getElementById('status');
+  a.checked=localStorage.getItem('analytics-consent')==='granted'; p.checked=localStorage.getItem('preference-consent')==='granted';
+  function apply(){const av=a.checked?'granted':'denied';localStorage.setItem('analytics-consent',av);localStorage.setItem('preference-consent',p.checked?'granted':'denied');if(window.gtag)window.gtag('consent','update',{analytics_storage:av,ad_storage:'denied',ad_user_data:'denied',ad_personalization:'denied'});s.textContent='Preferencias guardadas en este dispositivo.'}
+  document.getElementById('save').addEventListener('click',apply);document.getElementById('reject').addEventListener('click',()=>{a.checked=false;p.checked=false;apply()});
+</script>
+</Legal>
