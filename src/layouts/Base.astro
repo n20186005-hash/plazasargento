@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-const { title, description, image='/images/plaza-sargento-lores.jpg', noindex=false } = Astro.props;
+const { title, description, image='/images/plaza-sargento-lores.jpg', imageAlt='Plaza Sargento Lores - Vista principal en Iquitos, Perú', noindex=false } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
 ---
@@ -15,11 +15,17 @@ const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
   {noindex && <meta name="robots" content="noindex,nofollow" />}
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="es_PE" />
+  <meta property="og:site_name" content="Guía Plaza Sargento Lores" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   {canonical && <meta property="og:url" content={canonical} />}
   <meta property="og:image" content={ogImage} />
+  <meta property="og:image:alt" content={imageAlt} />
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+  <meta name="twitter:image:alt" content={imageAlt} />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
