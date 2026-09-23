@@ -1,0 +1,120 @@
+---
+import { getWeather, wmo, kmhToBeaufort, windDirText, uvLabel, buildAdvice } from '../lib/weather';
+
+const data = await getWeather();
+
+const fmt = (n: number) => Math.round(n).toString();
+const fmtDate = (iso: string) =>
+  new Date(iso + 'T00:00:00').toLocaleDateString('es-PE', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'America/Lima',
+  });
+
+const current = data ? wmo(data.now.weatherCode) : null;
+const advice = data ? buildAdvice(data) : null;
+const beaufort = data ? kmhToBeaufort(data.now.windSpeed) : 0;
+const today = data ? data.days[0] : null;
+const dayWarn = (code: number, p: number): string =>
+  code >= 95 ? '⚡ Tormenta' : p >= 60 ? '🌧 Lluvia probable' : '';
+---
+<section class="section" id="clima" style="background:#eef5f0">
+  <div class="container">
+    <div class="eyebrow">Clima en Iquitos</div>
+    <h2>Tiempo actual y pronóstico de varios días</h2>
+    <p class="lead">
+      El clima en la amazonía cambia a lo largo del día. Esta guía no solo dice el tiempo: sugiere
+      qué llevar y qué hacer según la condición real, para que no tengas que adivinarlo.
+    </p>
+
+    {data && current && advice && (
+      <div style="margin-top:30px">
+        {advice.alert && (
+          <div class="notice" style="border-left-color:var(--brick);background:#fdece8;margin-bottom:18px">
+            <strong>Aviso meteorológico:</strong> {advice.alert}
+          </div>
+        )}
+        {!advice.alert && (
+          <div class="notice" style="border-left-color:var(--leaf);background:#eaf4ec;margin-bottom:18px">
+            <strong>Sin avisos meteorológicos especiales.</strong> Condiciones normales para visitar la plaza.
+          </div>
+        )}
+
+        <div class="card" style="display:flex;flex-wrap:wrap;gap:28px;align-items:center;background:#fffdf8">
+          <div style="font-size:3.4rem;line-height:1">{current.icon}</div>
+          <div style="min-width:160px">
+            <div style="font-size:2.6rem;font-weight:900;color:var(--jungle)">{fmt(data.now.temperature)}°C</div>
+            <div style="font-weight:800">{current.label}</div>
+            <div class="fine">Sensación térmica {fmt(data.now.apparent)}°C</div>
+            {today && <div class="fine">Hoy: máx. {fmt(today.tMax)}° / mín. {fmt(today.tMin)}°</div>}
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(2,auto);gap:10px 28px;font-size:.95rem">
+            <span>💧 Humedad <strong>{fmt(data.now.humidity)}%</strong></span>
+            <span>🌬️ Viento <strong>{fmt(data.now.windSpeed)} km/h ({beaufort} Bft, {windDirText(data.now.windDirection)})</strong></span>
+            <span>🌧️ Precipitación <strong>{fmt(data.now.precipitation)} mm</strong></span>
+            <span>☀️ UV máx. previsto <strong>{uvLabel(today ? Math.max(today.uvMax, 0) : 0)}</strong></span>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px">
+          {advice.outfit.length > 0 && (
+            <div class="card" style="background:#fffdf8">
+              <h3 style="margin-top:0">👕 Cómo vestir</h3>
+              <ul style="padding-left:18px;margin:0">{advice.outfit.map((r) => <li>{r}</li>)}</ul>
+            </div>
+          )}
+          {advice.activity.length > 0 && (
+            <div class="card" style="background:#fffdf8">
+              <h3 style="margin-top:0">🗓️ Qué hacer</h3>
+              <ul style="padding-left:18px;margin:0">{advice.activity.map((r) => <li>{r}</li>)}</ul>
+            </div>
+          )}
+          {advice.items.length > 0 && (
+            <div class="card" style="background:#fffdf8">
+              <h3 style="margin-top:0">🎒 Qué llevar</h3>
+              <ul style="padding-left:18px;margin:0">{advice.items.map((r) => <li>{r}</li>)}</ul>
+            </div>
+          )}
+        </div>
+
+        <h3 style="margin:34px 0 14px">Pronóstico de 7 días</h3>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px">
+          {data.days.map((d) => {
+            const w = wmo(d.code);
+            const warn = dayWarn(d.code, d.precipProb);
+            return (
+              <div class="card" style="text-align:center;padding:14px 8px;background:#fffdf8">
+                <div style="font-size:.78rem;color:#5c6b62;text-transform:capitalize">{fmtDate(d.date)}</div>
+                <div style="font-size:1.8rem;margin:6px 0">{w.icon}</div>
+                <div style="font-weight:800">{fmt(d.tMax)}°</div>
+                <div class="fine">{fmt(d.tMin)}°</div>
+                <div style="font-size:.74rem;margin-top:6px">💧 {fmt(d.precipProb)}%</div>
+                <div style="font-size:.74rem">☀️ {uvLabel(d.uvMax)}</div>
+                {warn && <div style="font-size:.7rem;color:var(--brick);margin-top:4px">{warn}</div>}
+              </div>
+            );
+          })}
+        </div>
+        <p class="fine" style="margin-top:16px">
+          Pronóstico orientativo para Iquitos. La probabilidad de lluvia no garantiza que llueva; llévate
+          el impermeable por si acaso. Las condiciones pueden variar: confirma antes de salir y prioriza tu seguridad.
+        </p>
+      </div>
+    )}
+
+    {!data && (
+      <div class="notice" style="margin-top:24px">
+        En este momento no se pudo obtener la información del clima. Puedes reintentar más tarde;
+        la plaza sigue siendo accesible en horario habitual.
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  @media (max-width: 850px) {
+    #clima div[style*='grid-template-columns:repeat(7'] { grid-template-columns: repeat(3, 1fr) !important; }
+    #clima div[style*='grid-template-columns:repeat(3'] { grid-template-columns: 1fr !important; }
+  }
+</style>

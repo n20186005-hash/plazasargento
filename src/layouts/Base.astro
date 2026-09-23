@@ -15,7 +15,7 @@ const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
   {noindex && <meta name="robots" content="noindex,nofollow" />}
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="es_PE" />
-  <meta property="og:site_name" content="Guía Plaza Sargento Lores" />
+  <meta property="og:site_name" content="Plaza Sargento Lores Iquitos — Guía de visita" />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   {canonical && <meta property="og:url" content={canonical} />}
@@ -26,10 +26,13 @@ const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImage} />
   <meta name="twitter:image:alt" content={imageAlt} />
+  <meta name="theme-color" content="#173f2c" />
+  <link rel="manifest" href="/site.webmanifest" />
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="apple-touch-startup-image" href="/images/icon-512.png" />
   <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
@@ -38,6 +41,13 @@ const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
     const granted = localStorage.getItem('analytics-consent') === 'granted';
     gtag('consent','default',{'analytics_storage': granted ? 'granted':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied'});
     gtag('config','G-HXM22WWPKP', {anonymize_ip:true});
+  </script>
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      });
+    }
   </script>
 </head>
 <body><slot /></body>
