@@ -5,12 +5,13 @@
   "type": "module",
   "packageManager": "pnpm@11.23.0",
   "engines": {
-    "node": "24.19.0"
+    "node": ">=24.12.0 <25",
+    "pnpm": ">=11 <12"
   },
   "scripts": {
     "dev": "astro dev",
     "check": "astro check",
-    "build": "astro build",
+    "build": "astro build && node scripts/sanitize-worker-output.mjs",
     "preview": "astro preview",
     "deploy": "cd dist/server && wrangler deploy"
   },

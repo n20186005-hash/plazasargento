@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-const { title, description, image='/images/plaza-sargento-lores.jpg', imageAlt='Plaza Sargento Lores - Vista principal en Iquitos, Perú', noindex=false } = Astro.props;
+const { title, description, image='/images/plaza-sargento-lores.svg', imageAlt='Ilustración conceptual de un paseo tropical; no representa el lugar real', noindex=false } = Astro.props;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
 const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
 ---
@@ -33,15 +33,7 @@ const ogImage = Astro.site ? new URL(image, Astro.site).href : image;
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="apple-touch-startup-image" href="/images/icon-512.png" />
-  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-HXM22WWPKP"></script>
-  <script is:inline>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments)}
-    gtag('js', new Date());
-    const granted = localStorage.getItem('analytics-consent') === 'granted';
-    gtag('consent','default',{'analytics_storage': granted ? 'granted':'denied','ad_storage':'denied','ad_user_data':'denied','ad_personalization':'denied'});
-    gtag('config','G-HXM22WWPKP', {anonymize_ip:true});
-  </script>
+  <script is:inline src="/analytics.js"></script>
   <script is:inline>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

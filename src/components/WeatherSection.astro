@@ -5,7 +5,7 @@ const data = await getWeather();
 
 const fmt = (n: number) => Math.round(n).toString();
 const fmtDate = (iso: string) =>
-  new Date(iso + 'T00:00:00').toLocaleDateString('es-PE', {
+  new Date(iso + 'T12:00:00-05:00').toLocaleDateString('es-PE', {
     weekday: 'short',
     day: 'numeric',
     month: 'short',
@@ -24,20 +24,19 @@ const dayWarn = (code: number, p: number): string =>
     <div class="eyebrow">Clima en Iquitos</div>
     <h2>Tiempo actual y pronóstico de varios días</h2>
     <p class="lead">
-      El clima en la amazonía cambia a lo largo del día. Esta guía no solo dice el tiempo: sugiere
-      qué llevar y qué hacer según la condición real, para que no tengas que adivinarlo.
+      Pronóstico orientativo de Open-Meteo para el punto de la plaza. Los consejos se calculan a partir del modelo; no son avisos oficiales ni garantizan apertura o seguridad.
     </p>
 
     {data && current && advice && (
       <div style="margin-top:30px">
         {advice.alert && (
           <div class="notice" style="border-left-color:var(--brick);background:#fdece8;margin-bottom:18px">
-            <strong>Aviso meteorológico:</strong> {advice.alert}
+            <strong>Precaución según el pronóstico:</strong> {advice.alert}
           </div>
         )}
         {!advice.alert && (
           <div class="notice" style="border-left-color:var(--leaf);background:#eaf4ec;margin-bottom:18px">
-            <strong>Sin avisos meteorológicos especiales.</strong> Condiciones normales para visitar la plaza.
+            <strong>Revisa las condiciones locales.</strong> El modelo no ha activado un consejo adicional; esto no descarta riesgos ni sustituye avisos oficiales.
           </div>
         )}
 
@@ -57,7 +56,7 @@ const dayWarn = (code: number, p: number): string =>
           </div>
         </div>
 
-        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px">
+        <div class="weather-advice-grid">
           {advice.outfit.length > 0 && (
             <div class="card" style="background:#fffdf8">
               <h3 style="margin-top:0">👕 Cómo vestir</h3>
@@ -79,7 +78,7 @@ const dayWarn = (code: number, p: number): string =>
         </div>
 
         <h3 style="margin:34px 0 14px">Pronóstico de 7 días</h3>
-        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px">
+        <div class="weather-days-grid">
           {data.days.map((d) => {
             const w = wmo(d.code);
             const warn = dayWarn(d.code, d.precipProb);
@@ -97,7 +96,7 @@ const dayWarn = (code: number, p: number): string =>
           })}
         </div>
         <p class="fine" style="margin-top:16px">
-          Pronóstico orientativo para Iquitos. La probabilidad de lluvia no garantiza que llueva; llévate
+          Observación del modelo: {data.observedAt.replace('T', ' ')} (hora de Iquitos). Pronóstico orientativo: la probabilidad de lluvia no garantiza que llueva; llévate
           el impermeable por si acaso. Las condiciones pueden variar: confirma antes de salir y prioriza tu seguridad.
         </p>
       </div>
@@ -106,15 +105,15 @@ const dayWarn = (code: number, p: number): string =>
     {!data && (
       <div class="notice" style="margin-top:24px">
         En este momento no se pudo obtener la información del clima. Puedes reintentar más tarde;
-        la plaza sigue siendo accesible en horario habitual.
+        consulta el pronóstico y los avisos locales por otro canal antes de salir.
       </div>
     )}
   </div>
 </section>
 
 <style>
-  @media (max-width: 850px) {
-    #clima div[style*='grid-template-columns:repeat(7'] { grid-template-columns: repeat(3, 1fr) !important; }
-    #clima div[style*='grid-template-columns:repeat(3'] { grid-template-columns: 1fr !important; }
-  }
+.weather-advice-grid { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:22px; }
+.weather-days-grid { display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px; }
+@media(max-width:850px){.weather-advice-grid {grid-template-columns:1fr}.weather-days-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:420px){.weather-days-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 </style>

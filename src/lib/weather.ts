@@ -27,10 +27,11 @@ export interface WeatherData {
   now: WeatherNow;
   days: WeatherDay[];
   fetchedAt: string;
+  observedAt: string;
 }
 
-const LAT = -3.7479237962259844;
-const LON = -73.25471222305488;
+const LAT = -3.7479238;
+const LON = -73.2521373;
 
 export function buildWeatherUrl(lat: number, lon: number): string {
   const params = new URLSearchParams({
@@ -130,7 +131,6 @@ export function buildAdvice(d: WeatherData): Advice {
   const uvMax = Math.max(today.uvMax, 0);
   const windMax = Math.max(now.windSpeed, today.windMax);
   const tMax = today.tMax;
-  const tMin = today.tMin;
 
   const isStorm = code >= 95;
   const isRain = (code >= 51 && code <= 67) || (code >= 80 && code <= 82);
@@ -180,7 +180,7 @@ export function buildAdvice(d: WeatherData): Advice {
     );
   } else if (isCloudy) {
     activity.push(
-      'Cielo nublado: luz suave y sin sol fuerte, muy cómodo para caminar y fotografiar el centro.',
+      'Cielo nublado: puede ofrecer luz más suave; conserva la protección solar y comprueba las condiciones antes de salir.',
     );
   } else if (isFog) {
     activity.push(
@@ -218,10 +218,10 @@ export function buildAdvice(d: WeatherData): Advice {
   let alert: string | undefined;
   if (isStorm) {
     alert =
-      'Tormenta eléctrica en la zona. No salgas a cielo abierto, no te refugies bajo árboles ni cerca del río; las salidas en lancha pueden suspenderse. Espera a que pase el fenómeno.';
+      'El pronóstico indica tormenta eléctrica. No salgas a cielo abierto, no te refugies bajo árboles ni cerca del río; consulta avisos locales y al operador antes de cualquier actividad.';
   } else if (windMax >= 50) {
     alert =
-      'Viento fuerte. Mantente lejos de cornisas, cables y zonas ribereñas; las actividades acuáticas pueden cancelarse.';
+      'Viento fuerte. Mantente lejos de cornisas, cables y zonas ribereñas; consulta las condiciones con el operador de cualquier actividad.';
   } else if (isHeavyRain && precipProb >= 70) {
     alert =
       'Lluvia intensa. Evita zonas bajas y desagües; el piso mojado y resbaladizo aumenta el riesgo de caídas.';
@@ -234,11 +234,19 @@ export async function getWeather(): Promise<WeatherData | null> {
   const url = buildWeatherUrl(LAT, LON);
   try {
     const res = await fetch(url, {
+      signal: AbortSignal.timeout(8000),
       cf: { cacheTtl: 600, cacheEverything: true },
     } as unknown as RequestInit);
     if (!res.ok) return null;
     const j = (await res.json()) as any;
-    const c = j.current;
+    const c = j?.current;
+    const daily = j?.daily;
+    const finite = (n: unknown) => typeof n === 'number' && Number.isFinite(n);
+    if (!c || !daily || !['temperature_2m','relative_humidity_2m','apparent_temperature','precipitation','weather_code','wind_speed_10m','wind_direction_10m','is_day'].every(k=>finite(c[k]))) return null;
+    const observed = typeof c.time === 'string' ? Date.parse(c.time + '-05:00') : NaN;
+    if (!Number.isFinite(observed) || Math.abs(Date.now()-observed)>3*3600000) return null;
+    if (!Array.isArray(daily.time) || daily.time.length !== 7 || !daily.time.every((t: unknown)=>typeof t==='string' && /^\d{4}-\d{2}-\d{2}$/.test(t))) return null;
+    if (!['weather_code','temperature_2m_max','temperature_2m_min','precipitation_probability_max','uv_index_max','wind_speed_10m_max'].every(k=>Array.isArray(daily[k])&&daily[k].length===7&&daily[k].every(finite))) return null;
     const now: WeatherNow = {
       temperature: c.temperature_2m,
       apparent: c.apparent_temperature,
@@ -258,7 +266,7 @@ export async function getWeather(): Promise<WeatherData | null> {
       uvMax: j.daily.uv_index_max?.[i] ?? 0,
       windMax: j.daily.wind_speed_10m_max?.[i] ?? 0,
     }));
-    return { now, days, fetchedAt: new Date().toISOString() };
+    return { now, days, fetchedAt: new Date().toISOString(), observedAt: c.time };
   } catch {
     return null;
   }

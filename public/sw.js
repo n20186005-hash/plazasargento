@@ -2,10 +2,10 @@
  * Pages: network-first (fall back to cache when offline).
  * Static assets (images, css, js, fonts, manifest): cache-first.
  */
-const CACHE = 'plaza-sargento-v1';
+const CACHE = 'plaza-sargento-v2';
 const STATIC = /\.(?:html?|css|js|mjs|json|webmanifest|png|jpe?g|gif|svg|webp|avif|woff2?|ico|otf|ttf)$/i;
 
-self.addEventListener('install', (event) => {
+self.addEventListener('install', () => {
   self.skipWaiting();
 });
 
@@ -21,7 +21,7 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return;
+  if (url.origin !== self.location.origin || url.pathname.startsWith('/api/')) return;
 
   if (STATIC.test(url.pathname)) {
     event.respondWith((async () => {
