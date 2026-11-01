@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, RATING } from '../lib/site';
+import { GROUP_LABELS, topicsByGroup, type TopicGroup } from '../data/topics';
+
+interface Props {
+  group: TopicGroup;
+}
+const { group } = Astro.props;
+const info = GROUP_LABELS[group];
+const siteUrl = SITE.url;
+const hubUrl = `${siteUrl}/${group}/`;
+
+const webPageSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': hubUrl,
+  url: hubUrl,
+  name: info.label,
+  description: info.description,
+  inLanguage: 'es-PE',
+  about: { '@type': 'TouristAttraction', '@id': `${siteUrl}/#attraction` },
+  dateModified: '2026-11-01',
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { position: 1, name: 'Inicio', item: `${siteUrl}/` },
+    { position: 2, name: info.label, item: hubUrl },
+  ],
+};
+
+const topics = topicsByGroup(group);
+---
+<Base title={`${info.label} · Plaza Sargento Lores Iquitos`} description={info.description} image="/images/plaza-sargento-lores.svg" imageAlt="Ilustración conceptual de palmeras y un paseo; no representa la plaza real">
+<script is:inline type="application/ld+json" set:html={JSON.stringify(webPageSchema)}></script>
+<script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)}></script>
+
+<header style="position:fixed;z-index:4;top:0;left:0;right:0;background:#10281cf4;color:white"><div class="container nav">
+  <a class="brand" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="29" fill="#f2c35f"/><path d="M16 43c7-17 13-26 16-26s9 9 16 26" fill="none" stroke="#173f2c" stroke-width="5" stroke-linecap="round"/><path d="M21 38h22" stroke="#173f2c" stroke-width="5" stroke-linecap="round"/></svg><span>Plaza Sargento</span></a>
+  <a class="btn btn-light" href="/">Volver a la guía</a>
+</div></header>
+
+<main class="section" style="padding-top:120px;background:#e8f0e9">
+  <div class="container" style="max-width:1000px">
+    <nav class="breadcrumb" aria-label="Ruta de navegación" style="color:#3d5a48;margin-bottom:18px">
+      <a href="/">Inicio</a> <span aria-hidden="true">→</span> <span>{info.label}</span>
+    </nav>
+    <div class="eyebrow">Guías temáticas</div>
+    <h1 style="font-family:Georgia,serif;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;margin:.3rem 0 1rem">{info.label}</h1>
+    <p class="lead">{info.description}</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-top:30px">
+      {topics.map((t) => (
+        <a href={`/${t.slug}/`} style="display:block;padding:18px;border:1px solid #183d2a22;border-radius:16px;text-decoration:none;color:#16271e;background:#fff">
+          <strong style="font-size:1.05rem">{t.content.h1}</strong>
+          <p style="font-size:.88rem;color:#5c6b62;margin:.5rem 0 0;line-height:1.6">{t.content.lead}</p>
+        </a>
+      ))}
+    </div>
+
+    <section style="background:#fffdf8;border:1px solid #183d2a18;border-radius:20px;padding:24px;margin-top:36px">
+      <h2 style="font-family:Georgia,serif;font-size:1.4rem;margin:.2rem 0 .6rem">Fuentes y metodología</h2>
+      <p style="color:#33473c;font-size:.95rem">La información se contrasta con materiales públicos de la Municipalidad Provincial de Maynas, el Gobierno Regional de Loreto y las instituciones nacionales de turismo del Perú. La valoración {RATING.value.toFixed(1)}/5 y {RATING.count.toLocaleString('es-PE')} opiniones proceden de Google Maps, consultado {RATING.asOf}; confirma horarios y condiciones directamente con cada fuente. Este sitio es una guía independiente de visitantes y no está afiliado a ninguna entidad oficial.</p>
+    </section>
+  </div>
+</main>
+
+<footer style="background:#10281c;color:#e7eee8;padding:64px 0 28px">
+  <div class="container" style="max-width:1000px">
+    <div class="footer-grid" style="display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:38px">
+      <div>
+        <a class="brand" href="/" style="display:flex;gap:11px;align-items:center;font-weight:900;text-decoration:none;color:#fff"><svg viewBox="0 0 64 64" aria-hidden="true" style="width:42px;height:42px"><circle cx="32" cy="32" r="29" fill="#f2c35f"/><path d="M16 43c7-17 13-26 16-26s9 9 16 26" fill="none" stroke="#173f2c" stroke-width="5" stroke-linecap="round"/><path d="M21 38h22" stroke="#173f2c" stroke-width="5" stroke-linecap="round"/></svg><span>Plaza Sargento</span></a>
+        <p class="fine" style="color:#b9c9bf">Guía independiente para comprender y visitar la Plaza Sargento Lores de Iquitos.</p>
+      </div>
+      <div><strong>Información</strong><p style="line-height:2"><a href="/historia/" style="color:#f1f4ef">Historia</a><br><a href="/visita/" style="color:#f1f4ef">Cómo visitar</a><br><a href="/alrededores/" style="color:#f1f4ef">Alrededores</a><br><a href="/comer/" style="color:#f1f4ef">Dónde comer</a></p></div>
+      <div><strong>Legal</strong><p style="line-height:2"><a href="/privacidad/" style="color:#f1f4ef">Privacidad</a><br><a href="/terminos/" style="color:#f1f4ef">Términos</a><br><a href="/cookies/" style="color:#f1f4ef">Cookies</a></p></div>
+    </div>
+    <hr style="border:0;border-top:1px solid #ffffff22;margin:38px 0 24px" />
+    <div class="fine" style="color:#b9c9bf">
+      <p>Este sitio web es un proyecto independiente de información para visitantes y no está afiliado a ninguna entidad gubernamental u organización oficial.</p>
+      <p>© 2026 Guía Plaza Sargento Lores. Todos los derechos reservados.</p>
+    </div>
+  </div>
+</footer>
+</Base>
