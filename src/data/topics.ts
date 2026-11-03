@@ -223,7 +223,7 @@ export const TOPICS: Topic[] = [
             'Al visitar la plaza, reserva unos minutos para leer las inscripciones y observar el entorno cívico. Como espacio abierto, no requiere entrada ni horario especial para recorrerlo de forma respetuosa durante el día.',
           ],
           callout:
-            'Esta guía usa ilustraciones conceptuales y no fotografías documentales del monumento. En la página de fotos encontrarás sugerencias para fotografiar el lugar por tu cuenta.',
+            'La guía incluye una fotografía real de la plaza tomada en 2022, pero no es una verificación detallada ni actualizada del monumento. También contiene ilustraciones conceptuales. En la página de fotos encontrarás sugerencias para fotografiar el lugar.',
         },
       ],
       faq: [
@@ -286,14 +286,14 @@ export const TOPICS: Topic[] = [
       metaDescription:
         'Sugerencias para fotografiar la Plaza Sargento Lores de Iquitos: mejores horarios, ángulos y qué tener en cuenta, con honestidad sobre las imágenes de esta guía.',
       h1: 'Fotografiar la Plaza Sargento Lores',
-      lead: 'Las imágenes de esta guía son ilustraciones conceptuales, no fotografías del lugar. Aquí encontrarás cómo capturar tú mismo buenas fotos reales de la plaza.',
+      lead: 'La guía incluye una fotografía real de la plaza tomada en 2022 y dos ilustraciones conceptuales. Aquí encontrarás cómo capturar tú mismo fotos actuales del lugar.',
       updated: UPDATED,
       sections: [
         {
-          heading: 'Honestidad sobre nuestras imágenes',
+          heading: 'Una fotografía documental y dos ilustraciones',
           paragraphs: [
-            'Las ilustraciones de esta guía son representaciones conceptuales (palmeras, paseos imaginados); no son fotografías documentales ni planos del trazado real. Las incluimos para acompañar la lectura, no para mostrar el estado actual del lugar.',
-            'Para ver el entorno real, nada sustituye una visita o las fotos que tú mismo tomes y compartas con respeto.',
+            'La fotografía documental de la plaza fue tomada el 2 de marzo de 2022 por LLs y se reproduce sin modificaciones bajo licencia CC BY-SA 4.0 (Wikimedia Commons). No debe interpretarse como evidencia del estado actual del lugar.',
+            'Las otras dos imágenes de apoyo son representaciones conceptuales (palmeras, paseos imaginados), no planos del trazado real. Para ver las condiciones actuales, consulta fuentes recientes o toma tus propias fotos durante la visita.',
           ],
         },
         {
@@ -315,7 +315,7 @@ export const TOPICS: Topic[] = [
       faq: [
         {
           q: '¿Las fotos del sitio son reales?',
-          a: 'No. Son ilustraciones conceptuales de la guía. Esta página te sugiere cómo obtener tú mismo fotos reales del lugar.',
+          a: 'La primera imagen de la galería y el fondo de la portada son una fotografía real de 2022 de LLs (CC BY-SA 4.0). Las otras dos imágenes de apoyo son ilustraciones conceptuales.',
         },
         {
           q: '¿Cuál es el mejor horario para fotografiar?',
